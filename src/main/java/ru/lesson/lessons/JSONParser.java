@@ -16,10 +16,26 @@ public class JSONParser {
 
     public static ArrayList<Velostation> dumpData() {
         URL url = null;
-        try {
-            url = new URL(Config.apiUrl);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        int attemptCounter = 0;
+        boolean isFailed = false;
+        while (true) {
+            try {
+                isFailed = false;
+                url = new URL(Config.apiUrl);
+            } catch (Exception e) {
+                isFailed = true;
+                if (attemptCounter < 5) {
+                    attemptCounter++;
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                    continue;
+                }
+                e.printStackTrace();
+            }
+            if (! isFailed) break;
         }
 
 
