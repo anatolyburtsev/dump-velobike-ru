@@ -6,8 +6,7 @@ import java.sql.*;
  */
 public class DBManager {
 
-    Connection conn;
-    Statement stmt;
+    private Connection conn;
 
     private void connect() {
         try {
@@ -32,26 +31,36 @@ public class DBManager {
         }
     }
 
-    public void createVeloDB() {
-        doUpdateRequest("CREATE TABLE IF NOT EXISTS VELOSTATIONS (date TEXT, address TEXT, total_place INTEGER, free_place INTEGER, ID STRING, " +
+    void createVeloDB() {
+        doUpdateRequest("CREATE TABLE IF NOT EXISTS VELOSTATIONS (date TEXT, address TEXT, " +
+                "total_place INTEGER, total_electric_place INTEGER, total_ordinary_place INTEGER, " +
+                "free_place INTEGER, free_electric_place INTEGER, free_ordinary_place INTEGER, ID STRING, " +
                 "is_locked INTEGER, pos_lat REAL, pos_lon REAL);");
     }
 
-    public void addVeloStation(Velostation velostation, String date) {
+    void addVeloStation(Velostation velostation, String date) {
         String request = String.format("INSERT INTO VELOSTATIONS (" +
                 "date, " +
                 "address, " +
                 "total_place, " +
+                "total_electric_place, " +
+                "total_ordinary_place, " +
                 "free_place, " +
+                "free_electric_place, " +
+                "free_ordinary_place, " +
                 "ID, " +
                 "is_locked, " +
                 "pos_lat, " +
                 "pos_lon) " +
-                "VALUES (\"%s\", \"%s\", \"%d\", \"%d\", \"%s\", \"%d\", \"%f\", \"%f\");",
-                date.toString(),
+                "VALUES (\"%s\", \"%s\", \"%d\", \"%d\", \"%d\", \"%d\", \"%d\", \"%d\", \"%s\", \"%d\", \"%f\", \"%f\");",
+                date,
                 velostation.Address,
                 velostation.TotalPlaces,
+                velostation.TotalElectricPlaces,
+                velostation.TotalOrdinaryPlaces,
                 velostation.FreePlaces,
+                velostation.FreeElectricPlaces,
+                velostation.FreeOrdinaryPlaces,
                 velostation.Id,
                 velostation.IsLocked ? 0 : 1,
                 velostation.Position.get("Lat"),
@@ -69,7 +78,7 @@ public class DBManager {
         doUpdateRequest("DROP TABLE VELOSTATIONS;");
     }
 
-    private int doUpdateRequest(String request) {
+    private void doUpdateRequest(String request) {
         if (conn == null) connect();
         int  result = 0;
         try(Statement updateStmt = conn.createStatement()) {
@@ -77,7 +86,6 @@ public class DBManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
     }
 
 }

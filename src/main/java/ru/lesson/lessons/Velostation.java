@@ -10,10 +10,14 @@ import java.util.Map;
  */
 public class Velostation {
     String Address;
+    int FreeElectricPlaces;
+    int FreeOrdinaryPlaces;
     int FreePlaces;
     String Id;
     Boolean IsLocked;
     Map<String, Double> Position = new HashMap<String, Double>();
+    int TotalElectricPlaces;
+    int TotalOrdinaryPlaces;
     int TotalPlaces;
 
     @Override

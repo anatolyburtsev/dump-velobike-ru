@@ -1,7 +1,6 @@
 package ru.lesson.lessons;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.oracle.tools.packager.IOUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -17,7 +16,7 @@ public class JSONParser {
     public static ArrayList<Velostation> dumpData() {
         URL url = null;
         int attemptCounter = 0;
-        boolean isFailed = false;
+        boolean isFailed;
         while (true) {
             try {
                 isFailed = false;
@@ -43,8 +42,6 @@ public class JSONParser {
         try (InputStream in = url.openStream(); BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"))) {
             Gson gson = new GsonBuilder().create();
             rawVelostation = gson.fromJson(reader, RawVelostation.class);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
