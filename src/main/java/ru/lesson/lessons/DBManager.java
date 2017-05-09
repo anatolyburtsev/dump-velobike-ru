@@ -54,7 +54,7 @@ public class DBManager {
                 "pos_lon) " +
                 "VALUES (\"%s\", \"%s\", \"%d\", \"%d\", \"%d\", \"%d\", \"%d\", \"%d\", \"%s\", \"%d\", \"%f\", \"%f\");",
                 date,
-                velostation.Address,
+                velostation.Address.replaceAll("\"",""),
                 velostation.TotalPlaces,
                 velostation.TotalElectricPlaces,
                 velostation.TotalOrdinaryPlaces,
@@ -84,6 +84,7 @@ public class DBManager {
         try(Statement updateStmt = conn.createStatement()) {
             result = updateStmt.executeUpdate(request);
         } catch (SQLException e) {
+            System.out.println(request);
             e.printStackTrace();
         }
     }
